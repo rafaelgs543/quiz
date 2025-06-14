@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Início do Quiz FMPSC</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      background: url("imagem_com_logos1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .container {
+      background-color: rgba(25, 41, 59, 0.9);
+      padding: 30px 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 15px 25px;
+      font-size: 18px;
+      background-color: #3366cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    button:hover {
+      background-color: #254a99;
+    }
+
+    .logo-ads {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 150px;
+      opacity: 0.9;
+    }
+
+    .logo-fmp {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 150px;
+      opacity: 0.9;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    a {
+      color: #4da6ff;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 20px 15px;
+      }
+
+      .logo-ads, .logo-fmp {
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <img src="Marca FMP 1.png" alt="Logo FMP" class="logo-fmp">
+  <img src="Logo ADS FMP_6.png" alt="Logo ADS" class="logo-ads">
+
+  <div class="container">
+    <h1>Bem-vindo ao Quiz FMPSC</h1>
+    <p>Teste seus conhecimentos sobre a Faculdade Municipal de Palhoça (FMPSC).</p>
+    <p>Você terá 10 minutos para responder 20 perguntas. Boa sorte!</p>
+    <button onclick="iniciarQuiz()">Iniciar Quiz</button>
+  </div>
+
+  <footer>
+    © 2025 Rafael Gonçalves da Silva, Faculdade Municipal de Palhoça. Todos os direitos reservados.<br />
+    Contato: <a href="mailto:rafaelsilva543@hotmail.com">rafaelsilva543@hotmail.com</a>
+  </footer>
+
+  <script>
+    function iniciarQuiz() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
