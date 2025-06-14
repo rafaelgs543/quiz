@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <style></style>
+  <title>Quiz FMPSC</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0b2545; /* azul escuro */
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column; /* Adicionado para permitir o footer abaixo do container */
+      align-items: center; /* Centraliza o container horizontalmente */
+      min-height: 100vh;
+      color: #eee;
+    }
+    #container {
+      background-color: #4a6581; /* azul acinzentado */
+      padding: 25px 40px;
+      border-radius: 10px;
+      max-width: 700px;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      margin-bottom: 40px; /* Adicionado para dar espaço entre o container e o footer */
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .question {
+      margin-bottom: 22px;
+      text-align: left;
+    }
+    .question h3 {
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    label {
+      display: block;
+      margin-left: 20px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    label.correct {
+      color: #a6f0a6;
+      font-weight: bold;
+    }
+    label.incorrect {
+      color: #f07a7a;
+    }
+    #resultado {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 25px;
+      min-height: 28px;
+      color: #ffd700;
+    }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffec99;
+      margin-top: 30px;
+      text-align: center;
+    }
+    #btnRetry {
+      display: none;
+      margin: 25px auto 0 auto;
+      padding: 10px 18px;
+      background-color: #183e6d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+    #btnRetry:hover {
+      background-color: #2b61a4;
+    }
+    button[type="submit"] {
+      display: block;
+      margin: 25px auto 0 auto;
+      padding: 10px 18px;
+      background-color: #1c75bc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #3c9bd8;
+    }
+    /* Estilo para o footer */
+    footer {
+        /* background-color:#000; */
+        color:#fff;
+        text-align:center;
+        padding:15px;
+        margin-top:40px; /* Garante espaço acima do footer */
+        font-size:0.9em;
+        width: 100%; /* Faz o footer ocupar toda a largura */
+    }
+    footer a {
+        color:#4da6ff;
+        text-decoration:none;
+    }
+    footer a:hover {
+        text-decoration:underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Quiz sobre a FMPSC</h1>
+    <form id="quizForm"></form>
+
+    <button id="btnRetry">Tentar Novamente</button>
+    <div id="resultado"></div>
+    <div id="timer">Tempo restante: 10:00</div>
+
+  <script>
+    const perguntas = [
+      { texto: "1. Em que ano foi fundada a FMPSC?", nome: "q1", opcoes: [
+          { texto: "1990", valor: "a" },
+          { texto: "2002", valor: "b" },
+          { texto: "2010", valor: "c" },
+          { texto: "1995", valor: "d" },
+          { texto: "2005", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "2. Qual é a sigla da instituição?", nome: "q2", opcoes: [
+          { texto: "FMPSC", valor: "a" },
+          { texto: "FMP", valor: "b" },
+          { texto: "FMSC", valor: "c" },
+          { texto: "FMSP", valor: "d" },
+          { texto: "FMPSC", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "3. Qual curso é oferecido pela FMPSC?", nome: "q3", opcoes: [
+          { texto: "Direito", valor: "a" },
+          { texto: "Engenharia Civil", valor: "b" },
+          { texto: "Análise e Desenvolvimento de Sistemas", valor: "c" },
+          { texto: "Medicina", valor: "d" },
+          { texto: "Arquitetura", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "4. Qual é a duração média do curso de ADS na FMPSC?", nome: "q4", opcoes: [
+          { texto: "2 anos", valor: "a" },
+          { texto: "2 anos e meio", valor: "b" },
+          { texto: "3 anos", valor: "c" },
+          { texto: "4 anos", valor: "d" },
+          { texto: "5 anos", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "5. Em que cidade está localizada a FMPSC?", nome: "q5", opcoes: [
+          { texto: "Florianópolis", valor: "a" },
+          { texto: "São José", valor: "b" },
+          { texto: "Palhoça", valor: "c" },
+          { texto: "Biguaçu", valor: "d" },
+          { texto: "Tijucas", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "6. A FMPSC é uma instituição:", nome: "q6", opcoes: [
+          { texto: "Pública", valor: "a" },
+          { texto: "Privada", valor: "b" },
+          { texto: "Federal", valor: "c" },
+          { texto: "Estadual", valor: "d" },
+          { texto: "Municipal", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "7. Qual é a modalidade do curso de ADS?", nome: "q7", opcoes: [
+          { texto: "Presencial", valor: "a" },
+          { texto: "EAD", valor: "b" },
+          { texto: "Híbrido", valor: "c" },
+          { texto: "Semipresencial", valor: "d" },
+          { texto: "Online", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "8. Quantos semestres possui o curso de ADS?", nome: "q8", opcoes: [
+          { texto: "4", valor: "a" },
+          { texto: "5", valor: "b" },
+          { texto: "6", valor: "c" },
+          { texto: "7", valor: "d" },
+          { texto: "8", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "9. O que significa a sigla ADS?", nome: "q9", opcoes: [
+          { texto: "Administração de Sistemas", valor: "a" },
+          { texto: "Análise e Desenvolvimento de Sistemas", valor: "b" },
+          { texto: "Aplicações de Dados e Sistemas", valor: "c" },
+          { texto: "Apoio e Desenvolvimento Social", valor: "d" },
+          { texto: "Análise de Dados e Software", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "10. Quem avalia os cursos superiores no Brasil?", nome: "q10", opcoes: [
+          { texto: "INEP/MEC", valor: "a" },
+          { texto: "ENEM", valor: "b" },
+          { texto: "UNESCO", valor: "c" },
+          { texto: "ABNT", valor: "d" },
+          { texto: "CAPES", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "11. A FMPSC pertence a qual grupo educacional?", nome: "q11", opcoes: [
+          { texto: "Uniasselvi", valor: "a" },
+          { texto: "UNIASSELVI/UniSociesc", valor: "b" },
+          { texto: "Fundação Educacional Palhocense", valor: "c" },
+          { texto: "Grupo Kroton", valor: "d" },
+          { texto: "Grupo Ser Educacional", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "12. Quais linguagens são ensinadas em ADS?", nome: "q12", opcoes: [
+          { texto: "HTML, CSS, JavaScript", valor: "a" },
+          { texto: "Python, Java, SQL", valor: "b" },
+          { texto: "Todas as anteriores", valor: "c" },
+          { texto: "C++ e Ruby", valor: "d" },
+          { texto: "PHP e Swift", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "13. O curso de ADS inclui qual área?", nome: "q13", opcoes: [
+          { texto: "Programação", valor: "a" },
+          { texto: "Banco de Dados", valor: "b" },
+          { texto: "Ambas", valor: "c" },
+          { texto: "Redes", valor: "d" },
+          { texto: "Segurança da Informação", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "14. Qual é a principal saída profissional para formados em ADS?", nome: "q14", opcoes: [
+          { texto: "Professor", valor: "a" },
+          { texto: "Desenvolvedor de Software", valor: "b" },
+          { texto: "Secretário", valor: "c" },
+          { texto: "Analista de Sistemas", valor: "d" },
+          { texto: "Consultor de TI", valor: "e" }
+        ], correta: "b"
+      },
+      { texto: "15. Que tipo de diploma é obtido ao concluir ADS?", nome: "q15", opcoes: [
+          { texto: "Bacharelado", valor: "a" },
+          { texto: "Licenciatura", valor: "b" },
+          { texto: "Tecnólogo", valor: "c" },
+          { texto: "Técnico", valor: "d" },
+          { texto: "Pós-graduação", valor: "e" }
+        ], correta: "c"
+      },
+      { texto: "16. O curso de ADS possui estágio obrigatório?", nome: "q16", opcoes: [
+          { texto: "Sim", valor: "a" },
+          { texto: "Não", valor: "b" },
+          { texto: "Opcional", valor: "c" },
+          { texto: "Somente para bolsistas", valor: "d" },
+          { texto: "Somente para EAD", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "17. É possível obter bolsa de estudos na FMPSC?", nome: "q17", opcoes: [
+          { texto: "Sim", valor: "a" },
+          { texto: "Não", valor: "b" },
+          { texto: "Apenas no ENEM", valor: "c" },
+          { texto: "Apenas por mérito", valor: "d" },
+          { texto: "Somente para funcionários", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "18. Quais áreas a FMPSC atua além de ADS?", nome: "q18", opcoes: [
+          { texto: "Saúde e Educação", valor: "a" },
+          { texto: "Engenharia", valor: "b" },
+          { texto: "Apenas Tecnologia", valor: "c" },
+          { texto: "Administração", valor: "d" },
+          { texto: "Comunicação", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "19. A FMPSC oferece biblioteca digital?", nome: "q19", opcoes: [
+          { texto: "Sim", valor: "a" },
+          { texto: "Não", valor: "b" },
+          { texto: "Somente presencial", valor: "c" },
+          { texto: "Biblioteca móvel", valor: "d" },
+          { texto: "Biblioteca externa", valor: "e" }
+        ], correta: "a"
+      },
+      { texto: "20. A FMPSC é credenciada pelo MEC?", nome: "q20", opcoes: [
+          { texto: "Sim", valor: "a" },
+          { texto: "Não", valor: "b" },
+          { texto: "Apenas alguns cursos", valor: "c" },
+          { texto: "Em processo", valor: "d" },
+          { texto: "Não sabe", valor: "e" }
+        ], correta: "a"
+      }
+    ];
+
+    function embaralharArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const form = document.getElementById("quizForm");
+    const resultado = document.getElementById("resultado");
+    const btnRetry = document.getElementById("btnRetry");
+    const timerDiv = document.getElementById("timer");
+    let timerId;
+    let tempoRestante;
+
+    function iniciarTimer(segundos) {
+      tempoRestante = segundos;
+      atualizarTimer();
+      timerId = setInterval(() => {
+        tempoRestante--;
+        if (tempoRestante <= 0) {
+          clearInterval(timerId);
+          resultado.textContent = "Tempo esgotado! O quiz será finalizado.";
+          bloquearInputs();
+          mostrarBtnRetry();
+        }
+        atualizarTimer();
+      }, 1000);
+    }
+
+    function atualizarTimer() {
+      const min = Math.floor(tempoRestante / 60).toString().padStart(2, "0");
+      const seg = (tempoRestante % 60).toString().padStart(2, "0");
+      timerDiv.textContent = `Tempo restante: ${min}:${seg}`;
+    }
+
+    function bloquearInputs() {
+      const inputs = form.querySelectorAll("input[type='radio']");
+      inputs.forEach(input => input.disabled = true);
+    }
+
+    function mostrarBtnRetry() {
+      btnRetry.style.display = "block";
+    }
+
+    function gerarQuiz() {
+      form.innerHTML = '';
+      resultado.textContent = '';
+      btnRetry.style.display = "none";
+
+      perguntas.forEach(pergunta => {
+        const div = document.createElement("div");
+        div.className = "question";
+
+        const h3 = document.createElement("h3");
+        h3.textContent = pergunta.texto;
+        div.appendChild(h3);
+
+        const opcoesEmbaralhadas = embaralharArray([...pergunta.opcoes]);
+
+        opcoesEmbaralhadas.forEach(opcao => {
+          const label = document.createElement("label");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = pergunta.nome;
+          input.value = opcao.valor;
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(" " + opcao.texto));
+          div.appendChild(label);
+        });
+
+        form.appendChild(div);
+      });
+
+      const botaoEnviar = document.createElement("button");
+      botaoEnviar.type = "submit";
+      botaoEnviar.textContent = "Enviar Respostas";
+      form.appendChild(botaoEnviar);
+
+      // Criar o link "Voltar para o Início" e adicionar no DOM
+      const linkVoltar = document.createElement("a");
+      linkVoltar.href = "index.html";  // <<-- AQUI ESTÁ A CORREÇÃO
+      linkVoltar.id = "btnVoltar";
+      linkVoltar.textContent = "⟵ Voltar para o Início";
+      linkVoltar.style.display = "block";
+      linkVoltar.style.marginTop = "20px";
+      linkVoltar.style.color = "#fff";
+      linkVoltar.style.textDecoration = "none";
+      linkVoltar.style.textAlign = "center";
+      linkVoltar.style.fontWeight = "bold";
+
+      form.parentNode.insertBefore(linkVoltar, form.nextSibling);
+
+      iniciarTimer(10 * 60); // 10 minutos
+    }
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      clearInterval(timerId);
+
+      let acertos = 0;
+
+      perguntas.forEach(pergunta => {
+        const respostaSelecionada = form.querySelector(`input[name="${pergunta.nome}"]:checked`);
+        const labels = form.querySelectorAll(`input[name="${pergunta.nome}"] + label, input[name="${pergunta.nome}"]`);
+
+        if (respostaSelecionada) {
+          const valor = respostaSelecionada.value;
+          if (valor === pergunta.correta) {
+            acertos++;
+          }
+        }
+
+        // Marcar respostas corretas e erradas
+        const inputs = form.querySelectorAll(`input[name="${pergunta.nome}"]`);
+        inputs.forEach(input => {
+          const label = input.parentElement;
+          if (input.value === pergunta.correta) {
+            label.classList.add("correct");
+          }
+          if (input.checked && input.value !== pergunta.correta) {
+            label.classList.add("incorrect");
+          }
+          input.disabled = true;
+        });
+      });
+
+      resultado.textContent = `Você acertou ${acertos} de ${perguntas.length} perguntas!`;
+      mostrarBtnRetry();
+    });
+
+    btnRetry.addEventListener("click", () => {
+      generarQuiz(); // Certifique-se de que a função chamada seja gerarQuiz()
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Gera o quiz na primeira carga da página
+    gerarQuiz();
+  </script>
+  </div> <footer>
+    © 2025 Rafael Gonçalves da Silva, Faculdade Municipal de Palhoça. Todos os direitos reservados.<br />
+    Contato: <a href="mailto:rafaelsilva543@hotmail.com">rafaelsilva543@hotmail.com</a>
+  </footer>
+
+</body>
+</html>
